@@ -78,13 +78,13 @@ std::vector<std::string> split(const std::string& s) {
   unsigned j = 0;
   for(unsigned i = 0; i < s.length() - 2; i++) {
     if(s[i] == '|' && s[i+1] == '|' && s[i+2] == '|') {
-      if(i != j) {
+      //if(i != j) {
         result.push_back(s.substr(j, i - j));
         j = i + 3;
-      }
+      //}
     }
   }
-  if(j != s.length()) {
+  if(j != s.length() || true) {
     result.push_back(s.substr(j));
   }
   return result;
