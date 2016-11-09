@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   desc.add_options()
   ("help", "Display this help message")
   ("burn_in,b", po::value<unsigned>()->default_value(0), "Training text, morphologically analyzed")
-  ("sentence_count,n", po::value<unsigned>()->required(), "Dev text, used for early stopping");
+  ("sentence_count,n", po::value<unsigned>()->required(), "Number of sentences in the training corpus");
 
   po::positional_options_description positional_options;
   positional_options.add("sentence_count", 1);
