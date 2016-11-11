@@ -73,6 +73,7 @@ int main(int argc, char** argv) {
   desc.add_options()
   ("help", "Display this help message")
   ("burn_in,b", po::value<unsigned>()->default_value(0), "Training text, morphologically analyzed")
+  ("reverse,r", "Compute mode w.r.t. each source word rather than each target word. Use this iff you used -r with bayesianfastalign.")
   ("sentence_count,n", po::value<unsigned>()->required(), "Number of sentences in the training corpus");
 
   po::positional_options_description positional_options;
@@ -90,6 +91,7 @@ int main(int argc, char** argv) {
 
   const unsigned sentence_count = vm["sentence_count"].as<unsigned>();
   const unsigned burn_in = vm["burn_in"].as<unsigned>();
+  const bool reverse = vm.count("reverse") > 0;
 
   vector<vector<vector<unsigned>>> link_counts(sentence_count); // link_counts[sent_index][target_index][source_index] = count
 
@@ -110,6 +112,11 @@ int main(int argc, char** argv) {
     unsigned i, j;
     int n;
     while (sscanf(p, "%u-%u%n", &i, &j, &n) != -1) {
+      if (reverse) {
+        unsigned t = i;
+        i = j;
+        j = t;
+      }
       assert (p < line.c_str() + line.length());
       p += n;
 
@@ -153,7 +160,12 @@ int main(int argc, char** argv) {
         else {
           first = false;
         }
-        cout << best_i << "-" << j;
+        if (reverse) {
+          cout << j << "-" << best_i;
+        }
+        else {
+          cout << best_i << "-" << j;
+        }
       }
     }
     cout << endl;
