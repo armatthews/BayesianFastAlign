@@ -156,8 +156,8 @@ struct diagonal_alignment_prior : alignment_prior {
       tension = slice_sampler1d([this, &alignments, &src_corpus, &tgt_corpus_token_count](double prop_tension) { return this->log_likelihood(alignments, src_corpus, tgt_corpus_token_count, p0, prop_tension); },
                               //tension, eng, 1.0 / 30.0,
                               //30.0, 0.0, niterations, 100*niterations);
-                              tension, eng, std::numeric_limits<double>::min(),
-                              std::numeric_limits<double>::infinity(), 0.0, niterations, 100*niterations);
+                              tension, eng, 0.01,
+                              100.0, 0.0, niterations, 100*niterations);
 
       // TODO: This could be sped up considerably by keeping the LLH around and only update the probability of the null alignment links
       p0 = slice_sampler1d([this, &alignments, &src_corpus, &tgt_corpus_token_count](double prop_p0) { return this->log_likelihood(alignments, src_corpus, tgt_corpus_token_count, prop_p0, tension); },
