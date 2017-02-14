@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
   const string training_corpus_file = args["training_corpus"].as<string>();
   const bool have_initial_alignments = args.count("alignments");
   const string initial_alignment_file = args.count("alignments") ? args["alignments"].as<string>() : "";
-  diagonal_alignment_prior diag_alignment_prior(4.0, 0.01, true);
+  diagonal_alignment_prior diag_alignment_prior(4.0, 0.08, true);
   const unsigned samples = args["samples"].as<int>();
   const bool quiet = args.count("quiet") > 0;
   const bool reverse = args.count("reverse") > 0;

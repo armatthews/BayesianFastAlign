@@ -118,9 +118,10 @@ struct diagonal_alignment_prior : alignment_prior {
     // TODO: This returns NaN if the corpus contains empty sentences.
     //cerr << "[llh] p0=" << p0 << ", tension=" << tension << endl;
     assert(src_corpus.size() == alignments.size());
- 
-    const double p0_alpha = 0.08 * tgt_corpus_token_count;
-    const double p0_beta = 0.92 * tgt_corpus_token_count; 
+
+    const double strength = 28.44; // tgt_corpus_token_count
+    const double p0_alpha = 0.08 * strength;
+    const double p0_beta = 0.92 * strength;
     const double tension_shape = 70.0;
     const double tension_rate = 0.1;
 
@@ -156,8 +157,8 @@ struct diagonal_alignment_prior : alignment_prior {
       tension = slice_sampler1d([this, &alignments, &src_corpus, &tgt_corpus_token_count](double prop_tension) { return this->log_likelihood(alignments, src_corpus, tgt_corpus_token_count, p0, prop_tension); },
                               //tension, eng, 1.0 / 30.0,
                               //30.0, 0.0, niterations, 100*niterations);
-                              tension, eng, 0.01,
-                              100.0, 0.0, niterations, 100*niterations);
+                              tension, eng, 0.1,
+                              14.0, 0.0, niterations, 100*niterations);
 
       // TODO: This could be sped up considerably by keeping the LLH around and only update the probability of the null alignment links
       p0 = slice_sampler1d([this, &alignments, &src_corpus, &tgt_corpus_token_count](double prop_p0) { return this->log_likelihood(alignments, src_corpus, tgt_corpus_token_count, prop_p0, tension); },
